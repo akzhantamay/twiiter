@@ -1,0 +1,11 @@
+<% provide(:title, 'All users') %>
+<h1>Пользователи</h1>
+
+<%= will_paginate next_label: "⇨", previous_label: "⇦" %>
+
+
+<ul class="users">
+ <%= render @users %>
+</ul>
+
+<%= will_paginate next_label: "⇨", previous_label: "⇦" %>

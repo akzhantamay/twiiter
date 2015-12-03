@@ -1,7 +1,12 @@
 class UsersController < ApplicationController
   
   before_action :signed_in_user, only: [:edit, :update, :destroy]
-  before_action :check_user, only: [:edit, :update, :destroy]
+  before_action :check_user, only: [:edit, :update]
+  before_action :admin_user, only: [:destroy]
+ 
+  def index
+    @users = User.paginate(page: params[:page], per_page: 10)
+  end
  
   def new
     @user = User.new
@@ -21,6 +26,7 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
   
   def edit
@@ -66,6 +72,13 @@ class UsersController < ApplicationController
       unless current_user.id == user.id
         flash[:danger] = "Вы не авторизованы"
         redirect_to root_url
+      end
+    end
+    
+    def admin_user
+      unless current_user.admin?
+      flash[:danger] = "Вы не админ!"
+      redirect_to root_url 
       end
     end
   
