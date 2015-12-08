@@ -4,5 +4,10 @@
   <span class="content"><%= micropost.content %></span>
   <span class="timestamp">
     Пост опубликован <%= ((Time.now - micropost.created_at)/60).to_i %> минут назад
+    <% if current_user?(micropost.user) %>
+      <%= link_to "delete", micropost, method: :delete,
+                                       data: { confirm: "You sure?" },
+                                       title: micropost.content %>
+    <% end %>
   </span>
 </li>
